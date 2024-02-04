@@ -1,0 +1,59 @@
+.logo {
+    height: 100px;
+}
+
+.header {
+    display: flex;
+    padding: 50px 30px;
+    border-bottom: 40px solid black;
+}
+
+.socialMediaContainer {
+    display: flex;
+    flex: .33;
+}
+
+.socialMediaIcon {
+    display: flex;
+    justify-content: center;
+    padding: 12px;
+    margin-right: 10px;
+    
+    text-align: center;
+    background: #b1b1b1;
+    border-radius: 50%;
+    color: white;
+    width: 5px;
+    height: 5px;
+    font-size: 16px;
+
+    &:hover {
+        transition: .2s;
+        text-decoration: none;
+        background-color: #1f73ff;
+        cursor: pointer;
+    }
+}
+
+.socialMediaIcon > i {
+    display: flex;
+    align-self: center;
+}
+
+.logoContainer {
+    display: flex;
+    flex: .33;
+    justify-content:  center;
+}
+
+.shoppingCartContainer {
+    display: flex;
+    flex: .33;
+    justify-content: flex-end;
+}
+
+.shoppingCartIcon {
+    display: flex;
+    padding: 20px;
+}
+

@@ -1,0 +1,33 @@
+.main {
+    font-family: 'Roboto', Arial, sans-serif;
+    font-size: 12px;
+    display: flex;
+    flex-wrap: wrap;
+    padding-top: 30px;
+}
+
+.product {
+    display: flex;
+    padding-bottom: 20px;
+}
+
+.itemImage {
+    height: 100px;
+}
+
+.mainContainerLeft {
+    display: flex;
+    flex: .4;
+    padding-left: 100px;
+}
+
+.mainContainerRight {
+    display: flex;
+    flex: .6;
+    flex-direction: column;
+}
+
+.productInfo {
+    padding-right: 20px;
+    max-width: 100px;
+}

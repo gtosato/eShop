@@ -1,0 +1,85 @@
+.card {
+    display: flex;
+    justify-content: space-between;
+    padding: 30px;
+}
+
+.image {
+    height: 160px;
+}
+
+.deleteBtn {
+    color: blue;
+
+    &:hover {
+        cursor: pointer;
+    }
+}
+
+.inputBox {
+    width: 60px;
+    max-width: 60px;
+    padding: 0.5rem;
+    background: #f6f6f6;
+    border-color: #bdbdbd;
+    border-width: 1px
+}
+.inputBoxContainer {
+    display: flex;
+    align-items: center;
+}
+
+.productName, .productPrice, .productSubTotal {
+    display: flex;
+    align-items: center;
+    font-family: 'Roboto', Arial, sans-serif;
+    letter-spacing: 0;
+    font-size: 13px;
+    text-transform: uppercase;
+    font-weight: 400;
+}
+
+.productName {
+    width: 200px;
+}
+.productPrice, .productSubTotal {
+    width: 50px;
+}
+
+.productPrice, .productSubTotal {
+
+    font-weight: 400;
+    color: #1f73ff;
+}
+
+.deleteBtnContainer {
+    display: flex;
+    align-items: center;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 700;
+    color: #1f73ff;
+    font-size: 18px;
+}
+
+.changeQtyBtn {
+    padding: 7px;
+    margin: 10px 5px;
+}
+
+@media screen and (max-width: 700px) {
+    .card {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .image {
+        height: 150px;
+        width: 150px;
+    }
+    
+    .productName {
+        width: 100%;
+        justify-content: center;
+    }
+}
+

@@ -1,0 +1,41 @@
+.errorMessage {
+    color: red;
+}
+
+.sectionHeader {
+    font-size: 16px;
+    font-weight: 700;
+}
+
+input, select {
+    border: 1px solid #bdbdbd;
+    background-color: #f4f4f4;
+    padding: 0.2rem;
+    margin-top: 5px;
+    margin-bottom: 10px;
+}
+
+.fieldArea {
+    padding: 10px 0;
+}
+
+.submitButton {
+    background-color: #1f73ff;
+    border: none;
+    border-bottom: 3px solid #024ac2;
+    border-radius: 0;
+    color: #fff;
+    padding: 0.5em 1em;
+    text-transform: uppercase;
+    font-family: 'BebasNeue', Arial, sans-serif;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 1;
+    letter-spacing: 1px;
+    vertical-align: middle;
+    display: inline-block;
+    text-align: center;
+    transition: background-color .1s ease-out;
+    outline: none;
+    cursor: pointer;
+}

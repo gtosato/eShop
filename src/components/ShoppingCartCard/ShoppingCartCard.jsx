@@ -17,7 +17,7 @@ const ShoppingCartCard = ({
   subTotal,
 }) => {
   const [qty, setQty] = useState(0);
-  const { refresh } = useContext(RefreshContext);
+  const { refresh, setRefresh } = useContext(RefreshContext);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -37,7 +37,7 @@ const ShoppingCartCard = ({
     };
 
     fetchData();
-  }, [productId, qty, refresh]);
+  }, [productId, qty]);
 
   const handleQuantityChange = async (e) => {
     const newQuantity = parseInt(e.target?.value || 0);
@@ -59,7 +59,7 @@ const ShoppingCartCard = ({
     await deleteCartItemAndUpdateQtyInStock(cartId, productId);
 
     // Refresh the page after deletion
-    window.location.reload();
+    setRefresh(!refresh);
   };
 
   const handleNegativeAndDecimal = (e) => {

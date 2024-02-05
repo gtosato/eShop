@@ -1,12 +1,14 @@
 import { Link, useParams } from "react-router-dom";
 import ShoppingCartList from "../../containers/ShoppingCartList/ShoppingCartList";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { getAllCartItems } from "../../../services/products";
 import styles from "./ShoppingCartPage.module.scss";
+import { RefreshContext } from "../../context/RefreshContextProvider";
 const ShoppingCartPage = () => {
   const [cartItems, setCartItems] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
+  const { refresh } = useContext(RefreshContext);
 
   //   console.log(useParams());
 
@@ -19,7 +21,7 @@ const ShoppingCartPage = () => {
       .then((res) => setCartItems(res))
       .catch((e) => setError(e))
       .finally(() => setLoading(false));
-  }, [id]);
+  }, [id, refresh]);
   return (
     <main className={styles.main}>
       <h1 className={styles.title}>My Cart</h1>

@@ -36,7 +36,12 @@ const AddOrderForm = ({ submitHandler, cartItems }) => {
       <div className={styles.fieldArea}>
         <label htmlFor="email">Email Address</label>
         <div>
-          <input type="text" id="email" {...register("email")} />
+          <input
+            className={styles.input}
+            type="text"
+            id="email"
+            {...register("email")}
+          />
         </div>
         {errors.email && (
           <div className={styles.errorMessage}>{errors.email.message}</div>
@@ -46,7 +51,12 @@ const AddOrderForm = ({ submitHandler, cartItems }) => {
       <div className={styles.fieldArea}>
         <label htmlFor="firstName">First Name</label>
         <div>
-          <input type="text" id="firstName" {...register("firstName")} />
+          <input
+            className={styles.input}
+            type="text"
+            id="firstName"
+            {...register("firstName")}
+          />
         </div>
         {errors.firstName && (
           <div className={styles.errorMessage}>{errors.firstName.message}</div>
@@ -55,7 +65,12 @@ const AddOrderForm = ({ submitHandler, cartItems }) => {
       <div className={styles.fieldArea}>
         <label htmlFor="lastName">Last Name</label>
         <div>
-          <input type="text" id="lastName" {...register("lastName")} />
+          <input
+            className={styles.input}
+            type="text"
+            id="lastName"
+            {...register("lastName")}
+          />
         </div>
         {errors.lastName && (
           <div className={styles.errorMessage}>{errors.lastName.message}</div>
@@ -64,7 +79,12 @@ const AddOrderForm = ({ submitHandler, cartItems }) => {
       <div className={styles.fieldArea}>
         <label htmlFor="phone">Phone</label>
         <div>
-          <input type="text" id="phone" {...register("phone")} />
+          <input
+            className={styles.input}
+            type="text"
+            id="phone"
+            {...register("phone")}
+          />
         </div>
         {errors.phone && (
           <div className={styles.errorMessage}>{errors.phone.message}</div>
@@ -74,6 +94,7 @@ const AddOrderForm = ({ submitHandler, cartItems }) => {
         <label htmlFor="streetAddress">Street Address</label>
         <div>
           <input
+            className={styles.input}
             type="text"
             id="streetAddress"
             {...register("streetAddress")}
@@ -88,7 +109,11 @@ const AddOrderForm = ({ submitHandler, cartItems }) => {
       <div className={styles.fieldArea}>
         <label htmlFor="country">Country</label>
         <div>
-          <select id="country" {...register("country")}>
+          <select
+            className={styles.select}
+            id="country"
+            {...register("country")}
+          >
             {countries.map((country, index) => (
               <option key={index} value={country}>
                 {country}
@@ -103,7 +128,7 @@ const AddOrderForm = ({ submitHandler, cartItems }) => {
       <div className={styles.fieldArea}>
         <label htmlFor="state">State/Territory</label>
         <div>
-          <select id="state" {...register("state")}>
+          <select className={styles.select} id="state" {...register("state")}>
             {states.map((state, index) => (
               <option key={index} value={state}>
                 {state}
@@ -118,7 +143,12 @@ const AddOrderForm = ({ submitHandler, cartItems }) => {
       <div className={styles.fieldArea}>
         <label htmlFor="suburb">Suburb</label>
         <div>
-          <input type="text" id="suburb" {...register("suburb")} />
+          <input
+            className={styles.input}
+            type="text"
+            id="suburb"
+            {...register("suburb")}
+          />
         </div>
         {errors.suburb && (
           <div className={styles.errorMessage}>{errors.suburb.message}</div>
@@ -127,7 +157,12 @@ const AddOrderForm = ({ submitHandler, cartItems }) => {
       <div className={styles.fieldArea}>
         <label htmlFor="postcode">Postcode</label>
         <div>
-          <input type="text" id="postcode" {...register("postcode")} />
+          <input
+            className={styles.input}
+            type="text"
+            id="postcode"
+            {...register("postcode")}
+          />
         </div>
         {errors.postcode && (
           <div className={styles.errorMessage}>{errors.postcode.message}</div>

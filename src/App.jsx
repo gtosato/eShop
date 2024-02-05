@@ -6,8 +6,17 @@ import ProductPage from "./pages/ProductPage/ProductPage";
 import ShoppingCartPage from "./pages/ShoppingCartPage/ShoppingCartPage";
 import CheckoutPage from "./pages/CheckoutPage/CheckoutPage";
 import RefreshContextProvider from "./context/RefreshContextProvider";
+// import { emptyCart } from "../services/products.js";
 
 function App() {
+  // useEffect(() => {
+  //   try {
+  //     emptyCart();
+  //   } catch (error) {
+  //     console.error("Error in useEffect: ", error);
+  //   }
+  // }, []);
+
   return (
     <RefreshContextProvider>
       <BrowserRouter>

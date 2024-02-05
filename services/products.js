@@ -279,6 +279,23 @@ export const addNewOrder = async (data) => {
   }
 };
 
+// const emptyCart = async () => {
+//   const collection = "cartItems";
+//   try {
+//     const collectionRef = collection(db, collection);
+
+//     const querySnapshot = await getDocs(collection);
+
+//     querySnapshot.forEach(async (doc) => {
+//       await deleteDoc(doc.ref);
+//     });
+
+//     console.log("Collection deleted successfully.");
+//   } catch (error) {
+//     console.error("Error deleting collection: ", error);
+//   }
+// };
+
 // ****** COME BACK TO THIS IMPLEMENTATION TO ADD PRODUCTS WITH ORDER ***********
 // export const addNewOrder = async (data, cartItems) => {
 //   try {

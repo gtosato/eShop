@@ -22,11 +22,13 @@ const Header = () => {
         </div>
       </div>
       <div className={styles.logoContainer}>
-        <img
-          className={styles.logo}
-          src="https://www.deadeyedarts.com/media/logo/websites/1/logo.png"
-          alt=""
-        />
+        <Link to={"/"}>
+          <img
+            className={styles.logo}
+            src="https://www.deadeyedarts.com/media/logo/websites/1/logo.png"
+            alt=""
+          />
+        </Link>
       </div>
       <div className={styles.shoppingCartContainer}>
         <div className={styles.shoppingCartIcon}>

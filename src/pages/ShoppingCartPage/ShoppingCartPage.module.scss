@@ -15,10 +15,15 @@
 
 
 .title {
-    // display: flex;
-    // justify-content: center;
     font-family: "Bebas Neue", sans-serif;
     font-size: 2.75rem;
+    font-weight: 500;
+    padding-left: 50px;
+}
+
+.emptyCart {
+    font-family: "Bebas Neue", sans-serif;
+    font-size: 18px;
     font-weight: 500;
     padding-left: 50px;
 }
@@ -52,7 +57,6 @@
 
 @media screen and (max-width: 700px) {
     .buttonContainer {
-        // flex-direction: column;
         justify-content: center;
     }
 

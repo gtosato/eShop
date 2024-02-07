@@ -26,11 +26,17 @@ const ShoppingCartPage = () => {
   return (
     <main className={styles.main}>
       <h1 className={styles.title}>My Cart</h1>
-      <ShoppingCartList
-        cartItems={cartItems}
-        refresh={refresh}
-        setRefresh={setRefresh}
-      />
+      {cartItems && (
+        <ShoppingCartList
+          cartItems={cartItems}
+          refresh={refresh}
+          setRefresh={setRefresh}
+        />
+      )}
+      {/* {!cartItems ||
+        (!loading && (
+          <p className={styles.emptyCart}>Your cart is currently empty</p>
+        ))} */}
       <div className={styles.buttonContainer}>
         <Link to="/">
           <button className={styles.button}>Continue Shopping</button>

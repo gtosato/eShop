@@ -1,7 +1,9 @@
 import styles from "./ShoppingCartCard.module.scss";
 import {
   deleteCartItemAndUpdateQtyInStock,
+  increaseCartItemByOne,
   decreaseCartItemByOne,
+  getProductById,
 } from "../../../services/products.js";
 import { useEffect, useState, useRef } from "react";
 
@@ -17,8 +19,12 @@ const ShoppingCartCard = ({
   setRefresh,
 }) => {
   const [decrementBtnClicked, setDecrementBtnClicked] = useState(false);
-  const initialRender = useRef(true);
+  const [incrementBtnClicked, setIncrementBtnClicked] = useState(false);
 
+  const initialRender = useRef(true);
+  const initialProductRender = useRef(true);
+
+  // *************** X Button *******************************
   const deleteItem = async () => {
     await deleteCartItemAndUpdateQtyInStock(cartId, productId);
 
@@ -26,10 +32,7 @@ const ShoppingCartCard = ({
     setRefresh(!refresh);
   };
 
-  const incrementQuantity = () => {
-    alert("This button still requires implementation.");
-  };
-
+  // ****************** - Button ****************************
   useEffect(() => {
     if (initialRender.current) {
       initialRender.current = false;
@@ -50,6 +53,35 @@ const ShoppingCartCard = ({
     if (quantity > 1) {
       setDecrementBtnClicked(!decrementBtnClicked);
     }
+  };
+
+  // ****************** + Button ******************
+  useEffect(() => {
+    if (initialProductRender.current) {
+      initialProductRender.current = false;
+      return;
+    }
+
+    const getQtyInStock = async () => {
+      try {
+        const product = await getProductById(productId);
+
+        if (product.qtyInStock > 0) {
+          await increaseCartItemByOne(productId, price);
+          setRefresh(!refresh);
+        } else {
+          alert("We have currently run out of stock.");
+        }
+      } catch (error) {
+        console.error("Error locating product:", error);
+      }
+    };
+
+    getQtyInStock();
+  }, [incrementBtnClicked]);
+
+  const incrementQuantity = () => {
+    setIncrementBtnClicked(!incrementBtnClicked);
   };
 
   return (

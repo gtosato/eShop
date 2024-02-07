@@ -57,17 +57,53 @@ export const decreaseCartItemByOne = async (id, price) => {
   const existingCartItem = cartQuerySnapshot.docs[0];
   const currentProductQty = existingCartItem.data().quantity;
 
-  const newQuantity = parseInt(currentProductQty - 1);
-  const newSubTotal = parseFloat(newQuantity * price);
+  const newQuantity = currentProductQty - 1;
+  const newSubTotal = newQuantity * price;
 
   // Update the existing cartItem with the new quantity and subtotal.
   await updateDoc(doc(db, "cartItems", existingCartItem.id), {
-    quantity: newQuantity,
-    subTotal: newSubTotal,
+    quantity: parseInt(newQuantity),
+    subTotal: parseFloat(newSubTotal),
   });
 
   // Increase stock by 1 in Products collection
   increaseQtyInStockByOne(id);
+};
+
+// ******************** SHOPPING CART - PLUS BUTTON ***************************
+
+const decreaseQtyInStockByOne = async (productId) => {
+  const productRef = doc(db, "products", productId);
+  const productDoc = await getDoc(productRef);
+  const currentQtyInStock = productDoc.data().qtyInStock;
+
+  await updateDoc(productRef, {
+    qtyInStock: currentQtyInStock - 1,
+  });
+};
+
+export const increaseCartItemByOne = async (id, price) => {
+  // find existing item in cart
+  const cartQuery = query(
+    collection(db, "cartItems"),
+    where("productId", "==", id)
+  );
+  const cartQuerySnapshot = await getDocs(cartQuery);
+  // find existing id for cartItem record - should only be 1 record for each product
+  const existingCartItem = cartQuerySnapshot.docs[0];
+  const currentProductQty = existingCartItem.data().quantity;
+
+  const newQuantity = currentProductQty + 1;
+  const newSubTotal = newQuantity * price;
+
+  // Update the existing cartItem with the new quantity and subtotal.
+  await updateDoc(doc(db, "cartItems", existingCartItem.id), {
+    quantity: parseInt(newQuantity),
+    subTotal: parseFloat(newSubTotal),
+  });
+
+  // Decrease stock by 1 in Products collection
+  decreaseQtyInStockByOne(id);
 };
 
 const decreaseQtyInStock = async (productId, quantity) => {

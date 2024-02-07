@@ -1,11 +1,9 @@
 import styles from "./ShoppingCartCard.module.scss";
 import {
   deleteCartItemAndUpdateQtyInStock,
-  getProductById,
-  updateCartItemAndProductQty,
+  decreaseCartItemByOne,
 } from "../../../services/products.js";
-import { useEffect, useState, useContext } from "react";
-import { RefreshContext } from "../../context/RefreshContextProvider";
+import { useEffect, useState, useRef } from "react";
 
 const ShoppingCartCard = ({
   cartId,
@@ -15,71 +13,43 @@ const ShoppingCartCard = ({
   productId,
   quantity,
   subTotal,
+  refresh,
+  setRefresh,
 }) => {
-  const [qty, setQty] = useState(0);
-  const { refresh, setRefresh } = useContext(RefreshContext);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const product = await getProductById(productId);
-        const qtyInStock = product.qtyInStock;
-
-        if (qty > qtyInStock) {
-          alert(
-            "Not enough stock available. Only " + qtyInStock + " available."
-          );
-          setQty(qtyInStock);
-        }
-      } catch (error) {
-        console.error("Error fetching product:", error);
-      }
-    };
-
-    fetchData();
-  }, [productId, qty]);
-
-  const handleQuantityChange = async (e) => {
-    const newQuantity = parseInt(e.target?.value || 0);
-
-    // Perform logic to update qtyInStock and quantity
-    await updateCartItemAndProductQty(
-      productId,
-      cartId,
-      quantity,
-      price,
-      newQuantity
-    );
-
-    // Update local state with the new quantity
-    setQty(newQuantity);
-  };
+  const [decrementBtnClicked, setDecrementBtnClicked] = useState(false);
+  const initialRender = useRef(true);
 
   const deleteItem = async () => {
     await deleteCartItemAndUpdateQtyInStock(cartId, productId);
 
-    // Refresh the page after deletion
+    // Refresh page after deletion
     setRefresh(!refresh);
-  };
-
-  const handleNegativeAndDecimal = (e) => {
-    let myCharacterCode = e.keyCode;
-
-    if (myCharacterCode === 189 || myCharacterCode === 190) {
-      e.preventDefault();
-    }
   };
 
   const incrementQuantity = () => {
     alert("This button still requires implementation.");
-    // const newQuantity = qty + 1;
-    // handleQuantityChange(newQuantity);
   };
 
+  useEffect(() => {
+    if (initialRender.current) {
+      initialRender.current = false;
+      return;
+    }
+    const updateStock = async () => {
+      try {
+        await decreaseCartItemByOne(productId, price);
+        setRefresh(!refresh);
+      } catch (error) {
+        console.error("Error updating stock:", error);
+      }
+    };
+    updateStock();
+  }, [decrementBtnClicked]);
+
   const decrementQuantity = () => {
-    alert("This button still requires implementation.");
-    // const newQuantity = Math.max(qty - 1, 0);
-    // handleQuantityChange(newQuantity);
+    if (quantity > 1) {
+      setDecrementBtnClicked(!decrementBtnClicked);
+    }
   };
 
   return (
@@ -95,9 +65,7 @@ const ShoppingCartCard = ({
           disabled
           className={styles.inputBox}
           type="number"
-          defaultValue={quantity}
-          onKeyDown={handleNegativeAndDecimal}
-          onChange={handleQuantityChange}
+          value={quantity}
         />
         <button className={styles.changeQtyBtn} onClick={incrementQuantity}>
           +

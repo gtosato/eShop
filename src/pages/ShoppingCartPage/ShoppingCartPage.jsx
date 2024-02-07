@@ -8,7 +8,7 @@ const ShoppingCartPage = () => {
   const [cartItems, setCartItems] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
-  const { refresh } = useContext(RefreshContext);
+  const { refresh, setRefresh } = useContext(RefreshContext);
 
   //   console.log(useParams());
 
@@ -22,10 +22,15 @@ const ShoppingCartPage = () => {
       .catch((e) => setError(e))
       .finally(() => setLoading(false));
   }, [id, refresh]);
+
   return (
     <main className={styles.main}>
       <h1 className={styles.title}>My Cart</h1>
-      <ShoppingCartList cartItems={cartItems} />
+      <ShoppingCartList
+        cartItems={cartItems}
+        refresh={refresh}
+        setRefresh={setRefresh}
+      />
       <div className={styles.buttonContainer}>
         <Link to="/">
           <button className={styles.button}>Continue Shopping</button>

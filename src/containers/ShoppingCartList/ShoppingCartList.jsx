@@ -1,6 +1,7 @@
+import { useEffect } from "react";
 import ShoppingCartCard from "../../components/ShoppingCartCard/ShoppingCartCard";
 
-const ShoppingCartList = ({ cartItems }) => {
+const ShoppingCartList = ({ cartItems, refresh, setRefresh }) => {
   return (
     <section>
       {cartItems &&
@@ -15,6 +16,8 @@ const ShoppingCartList = ({ cartItems }) => {
               productId={item.productId}
               quantity={item.quantity}
               subTotal={item.subTotal}
+              refresh={refresh}
+              setRefresh={setRefresh}
             />
           );
         })}

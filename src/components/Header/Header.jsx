@@ -11,15 +11,21 @@ const Header = () => {
   return (
     <header className={styles.header}>
       <div className={styles.socialMediaContainer}>
-        <div className={styles.socialMediaIcon}>
-          <i className="fa fa-facebook"></i>
-        </div>
-        <div className={styles.socialMediaIcon}>
-          <i className="fa fa-twitter"></i>
-        </div>
-        <div className={styles.socialMediaIcon}>
-          <i className="fa fa-youtube"></i>
-        </div>
+        <a href="https://www.facebook.com/deadeyedarts/" target="_blank">
+          <div className={styles.socialMediaIcon}>
+            <i className="fa fa-facebook"></i>
+          </div>
+        </a>
+        <a href="https://twitter.com/DeadeyeDarts" target="_blank">
+          <div className={styles.socialMediaIcon}>
+            <i className="fa fa-twitter"></i>
+          </div>
+        </a>
+        <a href="https://www.youtube.com/user/DeadeyeDarts" target="_blank">
+          <div className={styles.socialMediaIcon}>
+            <i className="fa fa-youtube"></i>
+          </div>
+        </a>
       </div>
       <div className={styles.logoContainer}>
         <Link to={"/"}>

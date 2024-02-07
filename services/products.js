@@ -34,6 +34,42 @@ export const getProductById = async (id) => {
   return { id: docSnap.id, ...docSnap.data() };
 };
 
+// ******************** SHOPPING CART - MINUS BUTTON ***************************
+
+const increaseQtyInStockByOne = async (productId) => {
+  const productRef = doc(db, "products", productId);
+  const productDoc = await getDoc(productRef);
+  const currentQtyInStock = productDoc.data().qtyInStock;
+
+  await updateDoc(productRef, {
+    qtyInStock: currentQtyInStock + 1,
+  });
+};
+
+export const decreaseCartItemByOne = async (id, price) => {
+  // find existing item in cart
+  const cartQuery = query(
+    collection(db, "cartItems"),
+    where("productId", "==", id)
+  );
+  const cartQuerySnapshot = await getDocs(cartQuery);
+  // find existing id for cartItem record - should only be 1 record for each product
+  const existingCartItem = cartQuerySnapshot.docs[0];
+  const currentProductQty = existingCartItem.data().quantity;
+
+  const newQuantity = parseInt(currentProductQty - 1);
+  const newSubTotal = parseFloat(newQuantity * price);
+
+  // Update the existing cartItem with the new quantity and subtotal.
+  await updateDoc(doc(db, "cartItems", existingCartItem.id), {
+    quantity: newQuantity,
+    subTotal: newSubTotal,
+  });
+
+  // Increase stock by 1 in Products collection
+  increaseQtyInStockByOne(id);
+};
+
 const decreaseQtyInStock = async (productId, quantity) => {
   const productRef = doc(db, "products", productId);
   const productDoc = await getDoc(productRef);
@@ -278,38 +314,3 @@ export const addNewOrder = async (data) => {
     throw e;
   }
 };
-
-// const emptyCart = async () => {
-//   const collection = "cartItems";
-//   try {
-//     const collectionRef = collection(db, collection);
-
-//     const querySnapshot = await getDocs(collection);
-
-//     querySnapshot.forEach(async (doc) => {
-//       await deleteDoc(doc.ref);
-//     });
-
-//     console.log("Collection deleted successfully.");
-//   } catch (error) {
-//     console.error("Error deleting collection: ", error);
-//   }
-// };
-
-// ****** COME BACK TO THIS IMPLEMENTATION TO ADD PRODUCTS WITH ORDER ***********
-// export const addNewOrder = async (data, cartItems) => {
-//   try {
-//     const orderData = {
-//       ...formData,
-//       cartItems: cartItems,
-//     };
-
-//     const docRef = await addDoc(collection(db, "orders"), orderData);
-
-//     console.log("Order added with ID: ", docRef.id);
-
-//     return docRef.id;
-//   } catch (e) {
-//     throw e;
-//   }
-// };

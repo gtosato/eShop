@@ -13,6 +13,10 @@
     flex: .33;
 }
 
+.socialMediaContainer > a {
+    text-decoration: none;
+}
+
 .socialMediaIcon {
     display: flex;
     justify-content: center;

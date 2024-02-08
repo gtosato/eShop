@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import AddOrderForm from "../../components/AddOrderForm/AddOrderForm";
-import { getCartItems, addNewOrder } from "../../../services/products.js";
+import { getAllCartItems, addNewOrder } from "../../../services/products.js";
 import styles from "./CheckoutPage.module.scss";
 
 const CheckoutPage = () => {
@@ -13,7 +13,7 @@ const CheckoutPage = () => {
   useEffect(() => {
     const fetchCartItems = async () => {
       try {
-        const items = await getCartItems(cartId);
+        const items = await getAllCartItems();
         setCartItems(items);
       } catch (error) {
         console.error("Error fetching cart items:", error.message);
@@ -33,8 +33,15 @@ const CheckoutPage = () => {
       .catch((e) => console.error());
   };
 
+  let total = 0;
+
+  // Calculate total
+  cartItems.forEach((item) => {
+    total += item.subTotal;
+  });
+
   return (
-    <main className={styles.main}>
+    <main className={styles.mainContent}>
       <div className={styles.mainContainerLeft}>
         <AddOrderForm submitHandler={submitHandler} cartItems={cartItems} />
       </div>
@@ -44,9 +51,17 @@ const CheckoutPage = () => {
             <img src={item.image} className={styles.itemImage} alt="" />
             <p className={styles.productInfo}>{item.name}</p>
             <p className={styles.productInfo}>{item.quantity}</p>
-            <p className={styles.productInfo}>${item.price}</p>
+            <p className={styles.productInfo}>@</p>
+            <p className={styles.productInfo}>${item.price.toFixed(2)}</p>
+            <p className={styles.productInfo}>=</p>
+            <p className={styles.subTotal}>
+              <b>${item.subTotal.toFixed(2)}</b>
+            </p>
           </div>
         ))}
+        <div className={styles.total}>
+          Total:<span className={styles.totalPrice}>${total.toFixed(2)}</span>
+        </div>
       </div>
     </main>
   );

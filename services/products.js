@@ -11,6 +11,7 @@ import {
 } from "firebase/firestore";
 import { db, uniqueCartId } from "../config/firebase";
 
+// ***************** RETRIEVE ALL PRODUCTS FROM PRODUCT COLLECTION *****************
 export const getAllProducts = async () => {
   const querySnapshot = await getDocs(collection(db, "products"));
 
@@ -23,6 +24,7 @@ export const getAllProducts = async () => {
   return dataToReturn;
 };
 
+// ************* RETRIEVE SPECIFIC PRODUCT FROM PRODUCT COLLECTION *****************
 export const getProductById = async (id) => {
   const docRef = doc(db, "products", id);
   const docSnap = await getDoc(docRef);
@@ -35,7 +37,6 @@ export const getProductById = async (id) => {
 };
 
 // ******************** SHOPPING CART - MINUS BUTTON ***************************
-
 const increaseQtyInStockByOne = async (productId) => {
   const productRef = doc(db, "products", productId);
   const productDoc = await getDoc(productRef);
@@ -71,7 +72,6 @@ export const decreaseCartItemByOne = async (id, price) => {
 };
 
 // ******************** SHOPPING CART - PLUS BUTTON ***************************
-
 const decreaseQtyInStockByOne = async (productId) => {
   const productRef = doc(db, "products", productId);
   const productDoc = await getDoc(productRef);
@@ -106,6 +106,7 @@ export const increaseCartItemByOne = async (id, price) => {
   decreaseQtyInStockByOne(id);
 };
 
+// ******** DECREASE STOCK BY LEVEL ENTERED ON PRODUCT PAGE **************
 const decreaseQtyInStock = async (productId, quantity) => {
   const productRef = doc(db, "products", productId);
   const productDoc = await getDoc(productRef);
@@ -115,6 +116,7 @@ const decreaseQtyInStock = async (productId, quantity) => {
   });
 };
 
+// ************** ADD NEW PRODUCT TO CART IF IT CURRENTLY DOES NOT EXIST **********
 const addNewCartItem = async ({
   id,
   cartID,
@@ -133,12 +135,13 @@ const addNewCartItem = async ({
     quantity: quantity,
     subTotal: subTotal,
   });
-  console.log("Document written with ID: ", docRef.id);
+  // console.log("Document written with ID: ", docRef.id);
 
   // Decrease qtyInStock in products collection
   await decreaseQtyInStock(id, quantity);
 };
 
+// ************* UPDATE PRODUCT IN CART SINCE IT ALREADY EXISTS *****************
 const updateExistingCartItem = async (existingCartItem, price, quantity) => {
   const existingQuantity = existingCartItem.data().quantity;
   const newQuantity = existingQuantity + parseInt(quantity);
@@ -149,12 +152,13 @@ const updateExistingCartItem = async (existingCartItem, price, quantity) => {
     quantity: newQuantity,
     subTotal: newSubTotal,
   });
-  console.log("Product already exists in cart.  Value has been changed.");
+  // console.log("Product already exists in cart.  Value has been updated.");
 
   // Decrease qtyInStock in products collection
   await decreaseQtyInStock(existingCartItem.data().productId, quantity);
 };
 
+// *********** THIS WILL EITHER UPDATE PRODUCT IN CART, OR ADD IF DOES NOT EXIST ************
 export const addProductToCart = async ({ product }, quantity) => {
   const { id, image, name, price } = product;
   const cartID = uniqueCartId; // uniqueId initialised in firebase.js
@@ -183,6 +187,7 @@ export const addProductToCart = async ({ product }, quantity) => {
   }
 };
 
+// ************ RETRIEVE ALL CART ITEMS FOR SPECIFIED CART **************
 export const getAllCartItems = async () => {
   // uniqueId initialised in firebase.js
   const q = query(
@@ -202,6 +207,7 @@ export const getAllCartItems = async () => {
   return dataToReturn;
 };
 
+// ****** DELETE ITEM FROM CART AND UPDATE QTY IN STOCK WHEN USER CLICKS X IN SHOPPING LIST ****
 export const deleteCartItemAndUpdateQtyInStock = async (cartId, productId) => {
   // Get product in the shopping cart
   const cartItemQuery = query(
@@ -236,112 +242,7 @@ export const deleteCartItemAndUpdateQtyInStock = async (cartId, productId) => {
   }
 };
 
-const addOneToExistingCartItem = async (existingCartItem, price, quantity) => {
-  const existingQuantity = existingCartItem.data().quantity;
-  const newQuantity = existingQuantity + parseInt(quantity);
-  const newSubTotal = newQuantity * price;
-
-  // Update the existing document with the new quantity and subtotal.
-  await updateDoc(doc(db, "cartItems", existingCartItem.id), {
-    quantity: newQuantity,
-    subTotal: newSubTotal,
-  });
-  console.log("Product already exists in cart.  Value has been changed.");
-
-  // Decrease qtyInStock in products collection
-  await decreaseQtyInStock(existingCartItem.data().productId, quantity);
-};
-
-const subtractOneFromExistingCartItem = async (
-  existingCartItem,
-  price,
-  quantity
-) => {
-  const existingQuantity = existingCartItem.data().quantity;
-  const newQuantity = existingQuantity + parseInt(quantity);
-  const newSubTotal = newQuantity * price;
-
-  // Update the existing document with the new quantity and subtotal.
-  await updateDoc(doc(db, "cartItems", existingCartItem.id), {
-    quantity: newQuantity,
-    subTotal: newSubTotal,
-  });
-  // console.log("Product already exists in cart.  Value has been changed.");
-
-  // Decrease qtyInStock in products collection
-  await decreaseQtyInStock(existingCartItem.data().productId, quantity);
-};
-
-export const updateCartItemAndProductQty = async (
-  productId,
-  cartId,
-  oldQuantity,
-  newQuantity,
-  price
-) => {
-  try {
-    // Fetch product data from Product collection
-    const productRef = doc(db, "products", productId);
-    const productDoc = await getDoc(productRef);
-
-    if (productDoc.exists()) {
-      const qtyInStock = productDoc.data().qtyInStock;
-
-      // Check if there is enough quantity in stock
-      if (qtyInStock >= newQuantity - oldQuantity) {
-        // Get product in the shopping cart
-        const cartItemQuery = query(
-          collection(db, "cartItems"),
-          where("productId", "==", productId),
-          where("cartId", "==", cartId)
-        );
-
-        const cartItemQuerySnapshot = await getDocs(cartItemQuery);
-
-        if (!cartItemQuerySnapshot.empty) {
-          // Product already exists in the cart. Update the quantity.
-          const existingCartItem = cartItemQuerySnapshot.docs[0];
-
-          await updateExistingCartItem(
-            existingCartItem,
-            price,
-            parseInt(newQuantity)
-          );
-
-          // Update qtyInStock in Products collection
-          const updatedQtyInStock = qtyInStock - (newQuantity - oldQuantity);
-          await updateDoc(productRef, {
-            qtyInStock: parseInt(updatedQtyInStock),
-          });
-        }
-      } else {
-        throw new Error("Not enough stock available.");
-      }
-    } else {
-      throw new Error("Product not found.");
-    }
-  } catch (error) {
-    console.error("Error updating cart item and product quantity:", error);
-    throw error;
-  }
-};
-
-export const getCartItems = async () => {
-  try {
-    const querySnapshot = await getDocs(collection(db, "cartItems"));
-
-    const dataToReturn = querySnapshot.docs.map((doc) => {
-      return {
-        id: doc.id,
-        ...doc.data(),
-      };
-    });
-    return dataToReturn;
-  } catch (error) {
-    throw new Error("Error fetching cart items.");
-  }
-};
-
+// ************* ADD NEW ORDER TO ORDER COLLECTION ***********
 export const addNewOrder = async (data) => {
   // const newOrder = { ...data, additionalField: 0 };
   try {

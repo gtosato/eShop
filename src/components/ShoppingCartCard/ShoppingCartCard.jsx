@@ -70,7 +70,7 @@ const ShoppingCartCard = ({
           await increaseCartItemByOne(productId, price);
           setRefresh(!refresh);
         } else {
-          alert("We have currently run out of stock.");
+          alert(`We currently only have ${quantity} in stock.`);
         }
       } catch (error) {
         console.error("Error locating product:", error);

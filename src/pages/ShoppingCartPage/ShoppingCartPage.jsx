@@ -23,6 +23,15 @@ const ShoppingCartPage = () => {
       .finally(() => setLoading(false));
   }, [id, refresh]);
 
+  let total = 0;
+
+  // Calculate total
+  if (cartItems) {
+    cartItems.forEach((item) => {
+      total += item.subTotal;
+    });
+  }
+
   return (
     <main className={styles.main}>
       <h1 className={styles.title}>My Cart</h1>
@@ -37,6 +46,10 @@ const ShoppingCartPage = () => {
         (!loading && (
           <p className={styles.emptyCart}>Your cart is currently empty</p>
         ))} */}
+      <div className={styles.totalPrice}>
+        Total:
+        <span className={styles.totalPriceValue}>${total.toFixed(2)}</span>
+      </div>
       <div className={styles.buttonContainer}>
         <Link to="/">
           <button className={styles.button}>Continue Shopping</button>

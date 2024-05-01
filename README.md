@@ -3,6 +3,12 @@
 This project is a mock-up of an e-Shop website. It allows users to select an item from stock, add to cart, and checkout.
 
 <br />
+
+<div style='text-align: center;'>
+  <img src='./demo480p.gif' alt='demo' />
+</div>
+
+<br />
 Live deployment: 
 <br />
 https://gleeful-hummingbird-980b0a.netlify.app/

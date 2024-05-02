@@ -1,6 +1,6 @@
 # React e-Shop Website
 
-This project is a mock-up of an e-Shop website. It allows users to select an item from stock, add to cart, and checkout.
+This project is a mock-up of an existing e-Shop website. It allows users to select an item from stock, add to cart, and checkout. It is for educational purposes only.
 
 <br />
 
